@@ -1,14 +1,14 @@
-* [数据库知识](#数据库知识)
-    * [数据库架构](#数据库架构)
+* [linux](#linux)
+    * [linux的体系结构](#linux的体系结构)
     * [索引](#索引)
     * [锁模块](#锁模块)
     * [关键语法](#关键语法)
   
-# 数据库知识
-## 数据库架构
+# linux
+## linux的体系结构
 <div align=center>
 
-![数据库架构](pics/13.png)
+![linux的体系结构](pics/18.png)
 </div><br>
 
 ## 索引
@@ -90,29 +90,3 @@
         3.不可重复读——REPEATABLE_READ事务隔离级别以上可以避免
         4.幻读——SERIALIZABLE事务隔离级别可避免
 <div align=center>
-
-![索引](pics/15.png)
-</div><br>
-
-11. innodb可重复读隔离级别下如何避免幻读：
-        1. 表象：快照读（非阻塞读）——伪MVCC
-        2. 内在：next-key锁（行锁+gap锁）
-12. 当前读:select lock in share mode ,select for update,update,delete,insert--读取最新版本
-13. 快照读：不加锁的非阻塞读，select
-14. RC,RR级别下的InnoDB的非阻塞读如何实现：数据行里DB_TRX_ID,DB_ROLL_PTR,DB_ROW_ID;undo日志；read view
-15. 对主键索引或者唯一键索引会用GAP锁么：如果where条件全部命中，则不会用GAP锁，只会加记录锁，如果where条件部分命中挥着全不命中，则会加gap锁。
-16. GAP锁会用在非唯一索引或者不走索引的当前读中
-
-<div align=center>
-
-![索引](pics/16.png)
-</div><br>
-
-<div align=center>
-
-![索引](pics/17.png)
-</div><br>
-
-## 关键语法
-1. GROUP BY：满足SELECT子句中的列名必须为分组列或列函数group by里出现某个表的字段，select里面的列要么是该group by里面出现的列，要么是别的表的列或者带有函数的列，列函数对于group by子句定义的每个组各返回一个结果。
-2. having：通常与group by 一起使用，where过滤航，having过滤组，出现在同一sql的顺序where>group by>having
