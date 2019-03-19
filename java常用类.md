@@ -1,6 +1,6 @@
 * [java常用类](#java常用类)
     * [java异常体系](#java异常体系)
-    * [多线程原理](#多线程原理)
+    * [java集合框架](#java集合框架)
 
   
 # java多线程与并发
@@ -26,3 +26,70 @@
        非RuntimeException：
        ClassNotFoundException：找不到指定class异常
        IOException：IO操作异常
+
+       Error：
+       NoClassDefFoundError:找不到class定义的异常
+       StackOverflowError：深递归导致栈被好进而爆出异常
+       OutOfMemoryError：内存溢出异常
+4. java的异常处理机制：抛出异常：创建异常对象，交由运行时系统处理，捕获异常：寻找合适的异常处理器处理异常，否则终止运行
+5. java异常的处理原则：
+
+       具体明确：抛出的异常应能通过异常类名和message准确说明异常的类型和产生异常的愿意
+       提早抛出：应尽早的发现并抛出一厂房，便于精确定位问题
+       延迟捕获：异常的捕获和处理应尽可能延迟，让掌握更多信息的作用域来处理异常
+6. java异常处理消耗性能的地方：try-catch块影响JVM的优化，异常对象实例需要保存栈快照等信息，开销较大
+## java集合框架
+<div align=center>
+
+![java集合框架](pics/80.png)
+</div><br>
+
+1. 集合List和Set
+<div align=center>
+
+![集合List和Set](pics/81.png)
+</div><br>
+
+2. comparable的equals和hashcode和compareto方法
+3. Hashmap put方法逻辑：
+
+        如果HashMap未被初始化，则初始化
+        对KEY求Hash值，然后再计算下标
+        如果没有碰撞，直接放入桶中
+        如果碰撞了，以链表的方式放入连接到后面
+        如果链表长度超过阈值，就把链表转成红黑树
+        如果链表长度低于阈值，就把红黑树转成链表
+        如果节点已经存在就替换旧值
+        如果桶满了(容量16*加载因子0.75)，就需要resize（扩容两倍后重排）
+4. Hashmap:如何有效减少碰撞
+
+        扰动函数：促使元素位置分布均匀，减少碰撞几率
+        使用final对象，并采用合适的equals（）和hashcode（）方法
+
+<div align=center>
+
+![hashmap散列过程](pics/82.png)
+</div><br>
+
+5. Hashmap扩容的问题：
+
+        多线程环境下，调整大小会存在条件竞争，容易造成死锁
+        rehashing是一个比较耗时的过程
+6. HashTable:
+
+        早期Java类库提供的哈希表的实现
+        线程安全：设计到修改Hashtable的方法，使用synchronized修饰
+7. 如何优化Hashtable:
+
+        通过锁粒度细化，将整锁拆解成多个锁进行优化（早期通分段锁segment）
+        当前的ConcurrentHashmap:CAS+synchronized使锁更细化
+8. concurrentHashMap:put方法的逻辑
+
+        判断node数组是否初始化，没有则进行初始化操作
+        通过hash定位数组的索引坐标，是否有node节点吗，如果没有则使用CAS进行添加（链表的头节点），添加失败则进入下次循环
+        
+
+
+
+
+
