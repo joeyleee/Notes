@@ -1,6 +1,7 @@
 * [java常用类](#java常用类)
     * [java异常体系](#java异常体系)
     * [java集合框架](#java集合框架)
+    * [java的I/O](#java的I/O)
 
   
 # java多线程与并发
@@ -95,6 +96,70 @@
 
         比起segment锁拆的更细
         手下能使用无锁操作CAS拆入头结点，失败则循环重试
+        若节点已经存在，则尝试获取头结点的同步锁，在进行操作
+
+10. hashmap,hashtable,concurrenthashmap三者的区别：
+<div align=center>
+
+![三者区别](pics/83.png)
+</div><br>
+
+11. 并发工具类：闭锁countdownlatch，栅栏cyclicbarrier,信号量semaphore,交换器exchanger
+12. countdownlatch:
+<div align=center>
+
+![countdownlatch](pics/84.png)
+</div><br>
+
+13. cyclicbarrier:
+<div align=center>
+
+![cyclicbarrier](pics/85.png)
+</div><br>
+
+14. semaphore：
+<div align=center>
+
+![semaphore](pics/86.png)
+</div><br>
+
+15. exchanger:
+<div align=center>
+
+![exchanger](pics/87.png)
+</div><br>
+
+16. blockingQueue:主要用于生产者-消费者模式，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程在队列头部消费元素，通过这种方式能够将任务的生产和消费进行隔离的目的。
+<div align=center>
+
+![blockingQueue](pics/88.png)
+</div><br>
+<div align=center>
+
+![blockingQueue](pics/89.png)
+</div><br>
+
+##java的I/O
+1. Block-IO:InputStream和OutputStream，Reader和Writer
+<div align=center>
+
+![BIO](pics/90.png)
+</div><br>
+
+2. NonBlack-IO:构建多路复用的，同步非阻塞的IO操作
+<div align=center>
+
+![NIO](pics/91.png)
+</div><br>
+
+3. Asynchronous IO:基于事件和回调机制
+<div align=center>
+
+![AIO](pics/92.png)
+</div><br>
+ 
+
+
 
 
 
