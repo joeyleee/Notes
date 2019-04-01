@@ -35,8 +35,8 @@
 4. java的异常处理机制：抛出异常：创建异常对象，交由运行时系统处理，捕获异常：寻找合适的异常处理器处理异常，否则终止运行
 5. java异常的处理原则：
 
-       具体明确：抛出的异常应能通过异常类名和message准确说明异常的类型和产生异常的愿意
-       提早抛出：应尽早的发现并抛出一厂房，便于精确定位问题
+       具体明确：抛出的异常应能通过异常类名和message准确说明异常的类型和产生异常的愿意(尽量不适用高层的异常类)
+       提早抛出：应尽早的发现并抛出一异常，便于精确定位问题(可以根据异常链来找到异常的位置)
        延迟捕获：异常的捕获和处理应尽可能延迟，让掌握更多信息的作用域来处理异常
 6. java异常处理消耗性能的地方：try-catch块影响JVM的优化，异常对象实例需要保存栈快照等信息，开销较大
 ## java集合框架
@@ -54,18 +54,20 @@
 2. comparable的equals和hashcode和compareto方法
 3. Hashmap put方法逻辑：
 
-        如果HashMap未被初始化，则初始化
+        如果HashMap未被初始化，则初始化（刚刚创建的hashmap是没有初始化的）
         对KEY求Hash值，然后再计算下标
         如果没有碰撞，直接放入桶中
         如果碰撞了，以链表的方式放入连接到后面
         如果链表长度超过阈值，就把链表转成红黑树
         如果链表长度低于阈值，就把红黑树转成链表
         如果节点已经存在就替换旧值
-        如果桶满了(容量16*加载因子0.75)，就需要resize（扩容两倍后重排）
+        如果桶满，就需要resize（扩容两倍后重排）
+        一般初始容量是16,负载因子是0.75,如果hashmap中的元素个数超过16*0.75就要进行扩容，扩容后，数组长度变为原来的两倍，数组长度都是2的幂次方
 4. Hashmap:如何有效减少碰撞
 
         扰动函数：促使元素位置分布均匀，减少碰撞几率
         使用final对象，并采用合适的equals（）和hashcode（）方法
+        下面的过程是因为：一般的情况下数组长度不会计算到hashcode的高位，所以需要将hashcode的高位加入到运算中去，减少哈希碰撞。
 
 <div align=center>
 
@@ -76,13 +78,15 @@
 
         多线程环境下，调整大小会存在条件竞争，容易造成死锁
         rehashing是一个比较耗时的过程
+        在迭代器迭代hashmap的时候可能出现fail-fast异常，这是因为在迭代器工作时，有其他线程更改了hashmap的结构
 6. HashTable:
 
         早期Java类库提供的哈希表的实现
-        线程安全：设计到修改Hashtable的方法，使用synchronized修饰
+        线程安全：涉及到修改Hashtable的方法，使用synchronized修饰
+        可以使用Collection.synchronized（hashmap）将hashmap变成线程安全的，底层实现和hashtable一样
 7. 如何优化Hashtable:
 
-        通过锁粒度细化，将整锁拆解成多个锁进行优化（早期通分段锁segment）
+        通过锁粒度细化，将整锁拆解成多个锁进行优化（原始的hashtable整个使用一个锁，所以效率极低，可以将数组分为几部分，每一部分一个锁，这就是分段锁的实现）早期的concurrentHashmap采用的就是这种方式。
         当前的ConcurrentHashmap:CAS+synchronized使锁更细化
 8. concurrentHashMap:put方法的逻辑
 
@@ -95,7 +99,7 @@
 9. concurrentHashMap总结：
 
         比起segment锁拆的更细
-        手下能使用无锁操作CAS拆入头结点，失败则循环重试
+        首先能使用无锁操作CAS拆入头结点，失败则循环重试
         若节点已经存在，则尝试获取头结点的同步锁，在进行操作
 
 10. hashmap,hashtable,concurrenthashmap三者的区别：
@@ -139,8 +143,11 @@
 ![blockingQueue](pics/89.png)
 </div><br>
 
-##java的I/O
-1. Block-IO:InputStream和OutputStream，Reader和Writer
+## java的I/O
+1. Block-IO:
+
+        InputStream和OutputStream：字节流，直接操作文件不适用缓冲区，可以操作所有格式的文件。
+        Reader和Writer：字符流，采用缓冲区间接操作文件，一般用来操作文本文件。
 <div align=center>
 
 ![BIO](pics/90.png)
@@ -151,6 +158,12 @@
 
 ![NIO](pics/91.png)
 </div><br>
+
+<div align=center>
+
+![NIO](pics/101.png)
+</div><br>
+
 
 3. Asynchronous IO:基于事件和回调机制
 <div align=center>

@@ -30,7 +30,7 @@
 </div><br>
 
 ## 反射
-1. 反射：java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法，对于任意一个对象，都能够调用它的任意方法和属性，这种动态获取信息以及动态调用对象方法的功能成为java语言的反射机制。[代码实现](https://github.com/joeyleee/Notes/tree/master/code/javabasic/src/reflrct)
+1. 反射：java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法，对于任意一个对象，都能够调用它的任意方法和属性，这种动态获取信息以及动态调用对象方法的功能成为java语言的反射机制。[代码实现](https://github.com/joeyleee/Notes/tree/master/code/javabasic/src/reflect)
 2. 类从编译到执行的过程：编译器将.java源文件编译为.class字节码文件，classloader将字节码转换为JVM中的Class<>对象，JVM利用Class<>对象实例化。
 3. ClassLoader：ClassLoader在java中有着非常重要的作用，它主要工作在class装载的加载阶段，其主要作用是从系统外部获得class二进制数据流。它是java的核心组件，所有的class都是由classloader进行加载的，classloader负责通过将class文件里的二进制数据流装载进系统，然后交给java虚拟机进行连接，初始化等操作。
 4. classloader的种类：
